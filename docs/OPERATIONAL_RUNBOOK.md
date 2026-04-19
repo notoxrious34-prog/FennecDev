@@ -75,9 +75,10 @@ C:\Users\<username>\AppData\Roaming\fennec-facturation\
 ### Private Key (Operator — Secure Storage ONLY)
 ```
 NOT in the repository. NOT on the development machine's main drive.
-Location: [Encrypted USB] + [Password Manager secure note] + [Company encrypted storage]
+Location: Encrypted USB drive + Password Manager secure note + Company encrypted cloud storage
 Filename: fennec_license_private_encrypted.pem  (AES-256 encrypted with passphrase)
 Passphrase: Stored in company password manager under "Fennec Facturation License Key"
+NOTE: Fill in actual locations and password manager entry for your organization
 ```
 
 ---
