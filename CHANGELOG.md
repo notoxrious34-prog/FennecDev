@@ -85,6 +85,26 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 - License files (`.license`) issued for v3.0.0 remain valid — no re-activation needed.
   The license token format has not changed.
 
+### Development Timeline
+- **Phase 1** (Architecture): Electron monolith decomposed into layered architecture
+- **Phase 2** (Security): RSA-SHA256 license system, keygen eradication
+- **Phase 3** (Data Integrity): Zod validation, audit logging, automated backups
+- **Phase 3 UI**: Settings page, backup panel, audit trail viewer
+- **Phase 4A** (i18n & Context): Context optimization, i18n engine, RTL architecture
+- **Phase 4B** (Luxury UI): Design system, components, animations, print, accessibility
+- **Integration 1-4**: Cross-component wiring, performance, E2E testing, production hardening
+- **v3.0.1**: RSA key embedded, i18nAudit rewrite, 44/44 preDistCheck passing
+
+### Technical Debt Tracking
+| Item | Location | Priority | Target Version |
+|------|---------|---------|---------------|
+| Bundle fonts locally | src/styles/global.css | Medium | v3.1.0 |
+| DataTable virtualization | DataTable.tsx | Low | v3.1.0 |
+| Code signing | electron-builder.yml | Medium | v3.1.0 |
+| Window boundary validation | electron/utils/windowState.js | Low | v3.1.0 |
+| Copyright year dynamic | src/locales/*.json | Low | v3.1.0 |
+| Unit tests (service layer) | electron/services/ | High | v3.1.0 |
+
 ## [Unreleased] — Planned for v3.1.0
 
 - Local font bundling (removes Google Fonts CDN dependency — offline operation)

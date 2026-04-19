@@ -521,15 +521,15 @@ See `KNOWN_ISSUES.md` for the complete, up-to-date list.
 
 | Role | Responsibility | Contact |
 |------|---------------|---------|
-| Primary Developer | Code changes, bug fixes, new releases | [developer@company.com] |
-| License Authority | Issuing and revoking license tokens | [operator@company.com] |
-| Customer Support | First-line support, log collection | [support@company.com] |
+| Primary Developer | Code changes, bug fixes, new releases | developer@company.com (FILL IN) |
+| License Authority | Issuing and revoking license tokens | operator@company.com (FILL IN) |
+| Customer Support | First-line support, log collection | support@company.com (FILL IN) |
 | Database Recovery | Manual backup restore procedures | Primary Developer |
 
 ### Private Key Custodian
 The encrypted private key passphrase is stored in the company password manager.
-Access requires: [role/permission level].
-In case of key custodian unavailability: [backup custodian name/contact].
+Access requires: System Administrator or License Manager role (FILL IN).
+In case of key custodian unavailability: Contact company IT security team (FILL IN).
 
 ---
 
