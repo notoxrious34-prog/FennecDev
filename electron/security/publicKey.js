@@ -1,8 +1,21 @@
 // electron/security/publicKey.js
-// OPERATOR: Replace this placeholder with the actual RSA public key after key generation.
-// DO NOT COMMIT the private key. Only this public key belongs here.
+// RSA Public Key — Fennec Facturation v3.0 License System
+// Generated: 2025-04-19
+// Key size: 4096-bit RSA
+// This public key is safe to commit. NEVER commit the private key.
 const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
-REPLACE_WITH_ACTUAL_PUBLIC_KEY_CONTENT
+MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAynRPH0LmVXhl0D790LC3
+6nE462n5VZLS/j12xi2EGwy0CqW/fls3/XZt5lUB0bTTOm8DZNVkfCkJxICFF4Au
+ye5H9x2CpCknQNzmrwj3J2ufYioLaN5S8auRFU1vDohUB0nNuQg9vFG4VspcHrX7
+XBwzcq1l4FSI1gEvqZL50yH5I2wyxPObXWotKrUHms4ziI/YLE9Dm/mnZMnGnNE8
+5HbJFoqti+ohor8sqGvEBYUpCT8TVo+2t6KS8/gkeld9bbS1fns9Lplkyx2muV5V
+wuEuwOUz8SEisUnV1Y7FvzWfanJy2LoWKeWWSbVjHqeX08fKl/hmrxMRAmhtq8iv
+M0dU2cEUFn4JVIuUsHr/fcsUOy84GpXFyazG0YT/dA6nKgdGHpw8OywL78SHpkUs
+CTkJDEWMZBwI8KnVVHMMAL8kqPTo9s64TmxDAx5ANLZmYNvK/vDg2a/plpJgtK2n
+a0X5v9ZE71rinG+ldnqv6cSr5oq8sSAt+GmTUt2qzUT6yMAQC+H3Ivt+EMSG8cMn
+ptbBBGkPigwR4kVTY0vv/R4RuIv7IM+UqQb+mdYKFyHwgsOv1g38i92eMXxIhpf4
+0n5J32b6WmrYYAO2ghc1r1UPngm2AWS9+uZ9GVok8iIWzgyuc9HJJmjwmjmoaImO
+SHYQeD0enUGKOOMKEYDr+u8CAwEAAQ==
 -----END PUBLIC KEY-----`;
 
 module.exports = { PUBLIC_KEY };

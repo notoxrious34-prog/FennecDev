@@ -4,7 +4,7 @@
   "description": "Professional invoice management and client tracking for small businesses",
   "author": "Fennec Applications",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "main": "main.js",
   "scripts": {
     "dev": "vite",

@@ -20,12 +20,11 @@ None. All critical and high severity issues were resolved before release.
 - **Root Cause:** Incomplete dependency installation due to EPERM error
 - **Planned Fix:** Resolve underlying file permission issue with native modules
 
-### [ISSUE-005] — i18nAudit.js Script Parsing Issue
-- **Observed:** `node scripts/i18nAudit.js` reports FR and EN sections have only 133 keys while AR has 192 keys
-- **Workaround:** Manual inspection confirms all keys are present in translations.ts for all three languages
-- **Root Cause:** The script's regex pattern fails to correctly parse the FR and EN language sections due to file structure differences
-- **Impact:** None - the actual translations.ts file contains complete translations for all three languages (AR, FR, EN)
-- **Planned Fix:** Refactor i18nAudit.js to use a more robust parser (e.g., TypeScript AST parser) instead of regex-based parsing in v3.1.0
+### [ISSUE-005] — i18nAudit.js Script Parsing Issue ✅ RESOLVED in v3.0.1
+- **Was:** Regex-based key extraction caused false negatives on certain key patterns. The script reported FR and EN sections have only 133 keys while AR has 192 keys.
+- **Fix:** Replaced regex with `JSON.parse()` + recursive `flattenKeys()` function. The new implementation reads from locale JSON files (ar.json, fr.json, en.json) instead of parsing translations.ts with regex. It handles both flat and nested JSON structures, validates JSON syntax, detects duplicate keys, reports empty values as warnings, and supports `--verbose` and `--summary` flags.
+- **File changed:** `scripts/i18nAudit.js` (complete rewrite)
+- **Verification:** Script correctly detects deliberately introduced missing keys and exits 0 when all translations are complete. Current status: 192 keys present in all 3 languages (EN, FR, AR).
 
 ## Low Severity
 

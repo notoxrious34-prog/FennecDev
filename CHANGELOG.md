@@ -67,6 +67,24 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [3.0.1] — 2025-04-19
+
+### Security
+- Embedded RSA public key — license verification system now fully operational.
+  The v3.0.0 build contained a placeholder key and could not activate licenses.
+  All customers must use the v3.0.1 installer.
+
+### Fixed
+- `scripts/i18nAudit.js` — replaced unreliable regex key extraction with
+  `JSON.parse()` + recursive `flattenKeys()`. Now correctly detects missing
+  keys, empty values, and duplicate keys across all three language files.
+  Supports `--verbose` and `--summary` flags. Resolves ISSUE-005.
+
+### Notes
+- No database schema changes. Existing customer data is fully compatible.
+- License files (`.license`) issued for v3.0.0 remain valid — no re-activation needed.
+  The license token format has not changed.
+
 ## [Unreleased] — Planned for v3.1.0
 
 - Local font bundling (removes Google Fonts CDN dependency — offline operation)
