@@ -1,0 +1,145 @@
+/**
+ * RTL CSS Architecture
+ * Uses CSS logical properties for RTL/LTR support
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Logical_Properties
+ */
+
+/* Base RTL support */
+[dir="rtl"] {
+  direction: rtl;
+}
+
+[dir="ltr"] {
+  direction: ltr;
+}
+
+/* Logical property mappings */
+/* Instead of margin-left, use margin-inline-start */
+/* Instead of margin-right, use margin-inline-end */
+/* Instead of padding-left, use padding-inline-start */
+/* Instead of padding-right, use padding-inline-end */
+/* Instead of border-left, use border-inline-start */
+/* Instead of border-right, use border-inline-end */
+/* Instead of text-align: left, use text-align: start */
+/* Instead of text-align: right, use text-align: end */
+
+/* Icon flipping for directional icons */
+[dir="rtl"] .icon-flip {
+  transform: scaleX(-1);
+}
+
+/* Specific component RTL fixes */
+
+/* Sidebar navigation */
+[dir="rtl"] .sidebar {
+  border-left: none;
+  border-right: 1px solid var(--color-border);
+}
+
+[dir="ltr"] .sidebar {
+  border-right: none;
+  border-left: 1px solid var(--color-border);
+}
+
+/* Tables */
+[dir="rtl"] table th:first-child,
+[dir="rtl"] table td:first-child {
+  text-align: end;
+}
+
+[dir="ltr"] table th:first-child,
+[dir="ltr"] table td:first-child {
+  text-align: start;
+}
+
+/* Form inputs */
+[dir="rtl"] input[type="text"],
+[dir="rtl"] input[type="email"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] textarea {
+  text-align: start;
+}
+
+/* Buttons with icons */
+[dir="rtl"] .btn-with-icon {
+  flex-direction: row-reverse;
+}
+
+/* Badge positioning */
+[dir="rtl"] .badge-left {
+  right: auto;
+  left: 0;
+}
+
+[dir="ltr"] .badge-left {
+  left: auto;
+  right: 0;
+}
+
+/* Drawer/slide-over panels */
+[dir="rtl"] .drawer-right {
+  right: auto;
+  left: 0;
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .drawer-right.open {
+  transform: translateX(0);
+}
+
+[dir="ltr"] .drawer-right {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+
+[dir="ltr"] .drawer-right.open {
+  transform: translateX(0);
+}
+
+/* Spacing utilities using logical properties */
+.space-x-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Flex gap logical equivalent */
+[dir="rtl"] .gap-logical {
+  gap: 1rem;
+}
+
+/* Ensure Arabic font is used for RTL */
+[dir="rtl"] body {
+  font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Number formatting */
+[dir="rtl"] .number-ltr {
+  direction: ltr;
+  text-align: end;
+  unicode-bidi: embed;
+}
+
+/* Code blocks should always be LTR */
+[dir="rtl"] code,
+[dir="rtl"] pre {
+  direction: ltr;
+  text-align: start;
+}
+
+/* Scrollbar positioning */
+[dir="rtl"] ::-webkit-scrollbar {
+  width: 8px;
+}
+
+[dir="rtl"] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[dir="rtl"] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+[dir="rtl"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}

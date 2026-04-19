@@ -1,0 +1,42 @@
+appId: com.fennec.facturation
+productName: Fennec Facturation
+directories:
+  output: dist-electron
+  buildResources: build
+files:
+  - dist/**/*
+  - main.js
+  - electron/**/*
+  - package.json
+  - "!.npm-cache/**/*"
+asar: true
+asarUnpack:
+  - node_modules/better-sqlite3/**
+  - node_modules/node-machine-id/**
+win:
+  target:
+    - nsis
+  icon: public/fennec-icon.ico
+  artifactName: ${productName}-${version}.${ext}
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: Fennec Facturation
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  installerIcon: public/fennec-icon.ico
+  uninstallerIcon: public/fennec-icon.ico
+mac:
+  target:
+    - dmg
+  icon: build/icon.icns
+  category: public.app-category.business
+linux:
+  target:
+    - AppImage
+    - deb
+  icon: build/icons
+  category: Office
+publish:
+  provider: generic
+  url: https://releases.example.com

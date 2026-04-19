@@ -1,0 +1,123 @@
+/* ================================================================
+   PRINT STYLESHEET - PHASE 4B-4
+   Targeted at invoice detail page with RTL support
+   ================================================================ */
+
+@media print {
+  /* Hide non-print elements */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  /* Reset body for print */
+  body {
+    background-color: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+
+  /* Page settings */
+  @page {
+    margin: 0.5cm;
+    size: A4;
+  }
+
+  /* Invoice container */
+  .invoice-container {
+    background: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Invoice header */
+  .invoice-header {
+    page-break-after: avoid;
+    margin-bottom: 20pt;
+  }
+
+  /* Invoice details grid */
+  .invoice-details {
+    display: block !important;
+  }
+  .invoice-details > div {
+    margin-bottom: 8pt;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    page-break-inside: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th, td {
+    border: 1px solid #e2e8f0 !important;
+    padding: 8pt !important;
+    text-align: left !important;
+  }
+
+  /* RTL print support */
+  [dir="rtl"] th,
+  [dir="rtl"] td {
+    text-align: right !important;
+  }
+
+  /* Colors for print */
+  .text-accent {
+    color: #C4956A !important;
+  }
+
+  .text-success {
+    color: #52B788 !important;
+  }
+
+  .text-error {
+    color: #E05C5C !important;
+  }
+
+  /* Links */
+  a {
+    color: #000080 !important;
+    text-decoration: underline;
+  }
+
+  /* Buttons - show as text */
+  button,
+  .btn {
+    display: none !important;
+  }
+
+  /* Shadows and backgrounds */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* Scrollbars - hide in print */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
+}

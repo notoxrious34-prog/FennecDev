@@ -1,0 +1,184 @@
+/* ── BASE ──────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  position: relative;
+  overflow: hidden;
+  font-family: inherit;
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition: var(--transition-spring);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── SIZES ─────────────────────────────────────────────────── */
+.btn--xs {
+  padding: var(--space-1) var(--space-2-5);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-xs);
+}
+.btn--sm {
+  padding: var(--space-1-5) var(--space-3);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+}
+.btn--md {
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+}
+.btn--lg {
+  padding: var(--space-3) var(--space-7);
+  font-size: var(--text-base);
+  border-radius: var(--radius-md);
+}
+
+.btn--full-width {
+  width: 100%;
+}
+
+/* ── VARIANTS ──────────────────────────────────────────────── */
+
+/* Primary — Rose Gold gradient CTA */
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-on-accent);
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-accent-sm);
+  font-weight: var(--weight-semibold);
+}
+.btn--primary:hover:not(:disabled):not(.btn--loading) {
+  background: linear-gradient(135deg, var(--color-accent-hover) 0%, #E4B88A 100%);
+  box-shadow: var(--shadow-accent-md);
+  transform: translateY(-1px) scale(1.01);
+}
+.btn--primary:active:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-accent-active) 0%, var(--color-accent) 100%);
+  box-shadow: var(--shadow-accent-sm);
+  transform: translateY(0) scale(0.99);
+}
+
+/* Secondary — outlined */
+.btn--secondary {
+  background: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent-border);
+}
+.btn--secondary:hover:not(:disabled):not(.btn--loading) {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent-border-strong);
+  transform: translateY(-1px);
+}
+.btn--secondary:active:not(:disabled) {
+  background: var(--color-accent-subtle-hover);
+  transform: translateY(0);
+}
+
+/* Ghost — minimal */
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: transparent;
+}
+.btn--ghost:hover:not(:disabled):not(.btn--loading) {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+.btn--ghost:active:not(:disabled) {
+  background: var(--color-bg-interactive);
+}
+
+/* Accent Ghost */
+.btn--accent-ghost {
+  background: transparent;
+  color: var(--color-accent);
+  border-color: transparent;
+}
+.btn--accent-ghost:hover:not(:disabled):not(.btn--loading) {
+  background: var(--color-accent-subtle);
+  border-color: var(--color-accent-border);
+}
+
+/* Danger */
+.btn--danger {
+  background: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error-border);
+}
+.btn--danger:hover:not(:disabled):not(.btn--loading) {
+  background: var(--color-error-subtle);
+  border-color: var(--color-error);
+  transform: translateY(-1px);
+}
+.btn--danger:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ── STATES ────────────────────────────────────────────────── */
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn--loading {
+  cursor: wait;
+}
+
+.btn__spinnerWrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: btn-spin 0.65s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn__contentHidden {
+  opacity: 0;
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Directional icons mirror in RTL */
+[dir="rtl"] .btn__icon {
+  transform: scaleX(-1);
+}
+
+.btn__iconLeft {
+  margin-inline-end: var(--space-1);
+}
+
+.btn__iconRight {
+  margin-inline-start: var(--space-1);
+}

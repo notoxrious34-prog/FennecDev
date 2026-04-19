@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fennec Key Generator v3.0</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1e293b;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #334155;
+        }
+        .icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1.5rem;
+            color: #10b981;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        p {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+        .key-display {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.25rem;
+            color: #10b981;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            user-select: all;
+            position: relative;
+        }
+        button {
+            background-color: #10b981;
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #059669;
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #64748b;
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+            </svg>
+        </div>
+        <h1>Fennec Key Generator</h1>
+        <p>Generate valid license keys for Fennec v3.0.0</p>
+
+        <div class="key-display" id="keyDisplay">CLICK GENERATE</div>
+
+        <button onclick="generateKey()">Generate New Key</button>
+
+        <div class="footer">
+            ALGORITHM: SHA-256 (SIMULATED) | SALT: FENNEC_V3<br>
+            CONFIDENTIAL TOOL - FOR AUTHORIZED USE ONLY
+        </div>
+    </div>
+
+    <script>
+        const SALT = "FENNEC_V3_SECURE_KEY_2025";
+
+        const randomString = (length) => {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return result;
+        };
+
+        const generateChecksum = (input) => {
+            let hash = 0;
+            const str = input + SALT;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(16).substring(0, 4).toUpperCase().padStart(4, '0');
+        };
+
+        function generateKey() {
+            const prefix = "FEN3";
+            const part1 = randomString(4);
+            const part2 = randomString(4);
+            
+            const combined = `${prefix}${part1}${part2}`;
+            const checksum = generateChecksum(combined);
+            
+            const key = `${prefix}-${part1}-${part2}-${checksum}`;
+            
+            document.getElementById('keyDisplay').innerText = key;
+            
+            // Auto copy
+            navigator.clipboard.writeText(key).then(() => {
+                const btn = document.querySelector('button');
+                const originalText = btn.innerText;
+                btn.innerText = "Copied to Clipboard!";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

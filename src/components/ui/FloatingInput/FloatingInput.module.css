@@ -1,0 +1,139 @@
+/* ── WRAPPER ────────────────────────────────────────────────── */
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── INPUT CONTAINER ─────────────────────────────────────────── */
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-fast) var(--ease-in-out),
+              box-shadow var(--duration-fast) var(--ease-in-out);
+}
+
+.inputWrap:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
+
+.field--error .inputWrap {
+  border-color: var(--color-error);
+}
+.field--error .inputWrap:focus-within {
+  box-shadow: 0 0 0 3px var(--color-error-subtle);
+}
+
+/* ── INPUT ELEMENT ──────────────────────────────────────────── */
+.input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: var(--space-5) var(--space-4) var(--space-2);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  caret-color: var(--color-accent);
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--color-text-primary);
+  -webkit-box-shadow: 0 0 0px 1000px var(--color-bg-sunken) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── FLOATING LABEL ─────────────────────────────────────────── */
+.label {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transform-origin: inline-start center;
+  transition: top var(--duration-fast) var(--ease-in-out),
+              font-size var(--duration-fast) var(--ease-in-out),
+              color var(--duration-fast) var(--ease-in-out),
+              transform var(--duration-fast) var(--ease-in-out);
+}
+
+.inputWrap:focus-within .label,
+.input:not(:placeholder-shown) ~ .label,
+.field--has-value .label {
+  top: var(--space-2);
+  transform: translateY(0) scale(0.78);
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--weight-medium);
+}
+
+.inputWrap:focus-within .label {
+  color: var(--color-accent);
+}
+.field--error .label {
+  color: var(--color-error) !important;
+}
+
+/* ── ADDONS ─────────────────────────────────────────────────── */
+.addon {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+.addon--left {
+  padding-inline-end: 0;
+}
+.addon--right {
+  padding-inline-start: 0;
+}
+
+.has-left-addon .input {
+  padding-inline-start: var(--space-2);
+}
+.has-right-addon .input {
+  padding-inline-end: var(--space-2);
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin 0.65s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── HINT & ERROR TEXT ──────────────────────────────────────── */
+.hint,
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+.hint {
+  color: var(--color-text-tertiary);
+}
+.errorMsg {
+  color: var(--color-error);
+}
