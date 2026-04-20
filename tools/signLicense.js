@@ -30,13 +30,11 @@ if (!fs.existsSync(privateKeyPath)) {
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
 
-// Create license payload
+// Create license payload with canonical key order (must match verifier)
 const payload = {
-  machineId: machineId,
-  issuedAt: Date.now(),
-  // License expires in 1 year (adjust as needed)
-  expiresAt: Date.now() + (365 * 24 * 60 * 60 * 1000),
-  // License type: 'trial' or 'full'
+  machineId:   machineId,
+  issuedAt:    Date.now(),
+  expiresAt:   Date.now() + (365 * 24 * 60 * 60 * 1000),
   licenseType: 'full'
 };
 
@@ -53,7 +51,8 @@ const token = {
   signature: signature
 };
 
-const tokenString = JSON.stringify(token);
+// Encode the token as base64 to match application verifier protocol
+const tokenString = Buffer.from(JSON.stringify(token), 'utf8').toString('base64');
 
 // Save to .license file
 const licensePath = path.join(__dirname, '../fennec-facturation.license');

@@ -50,7 +50,8 @@ contextBridge.exposeInMainWorld('api', {
     activate: (licenseToken) => ipcRenderer.invoke('license:activate', { licenseToken }),
     checkStatus: () => ipcRenderer.invoke('license:checkStatus'),
     getDetails: () => ipcRenderer.invoke('license:getDetails'),
-    getMachineId: () => ipcRenderer.invoke('license:getMachineId')
+    getMachineId: () => ipcRenderer.invoke('license:getMachineId'),
+    getLicenseType: () => ipcRenderer.invoke('license:getLicenseType')
   },
 
   // Backup operations

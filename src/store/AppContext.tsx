@@ -3,6 +3,7 @@ import { Client, Product, Invoice, StoreSettings } from '../types';
 import { DataProvider, useData } from './DataContext';
 import { ActionsProvider, useActions } from './ActionsContext';
 import { SettingsProvider, useSettings } from './SettingsContext';
+import { LicenseProvider, useLicense } from './LicenseContext';
 
 // Type declaration for window.api
 declare global {
@@ -41,6 +42,7 @@ declare global {
         checkStatus: () => Promise<{ success: boolean; data?: any; error?: any }>;
         getDetails: () => Promise<{ success: boolean; data?: any; error?: any }>;
         getMachineId: () => Promise<{ success: boolean; machineId?: string; error?: any }>;
+        getLicenseType: () => Promise<{ success: boolean; data?: any; error?: any }>;
       };
       backup: {
         create: () => Promise<{ success: boolean; path?: string; filename?: string; error?: any }>;
@@ -83,6 +85,6 @@ export const useAppContext = () => {
     settings,
     updateSettings,
     refreshSettings,
-    ...actions
+    ...actions,
   };
 };

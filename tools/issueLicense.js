@@ -80,12 +80,12 @@ if (!fs.existsSync(privateKeyPath)) {
 
 const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
 
-// Create license payload
+// Create license payload with canonical key order (must match verifier)
 const now = Date.now();
 const payload = {
-  machineId: machineId,
-  issuedAt: now,
-  expiresAt: now + (options.days * 24 * 60 * 60 * 1000),
+  machineId:   machineId,
+  issuedAt:    now,
+  expiresAt:   now + (options.days * 24 * 60 * 60 * 1000),
   licenseType: options.type
 };
 
@@ -102,7 +102,8 @@ const token = {
   signature: signature
 };
 
-const tokenString = JSON.stringify(token);
+// Encode the token as base64 to match application verifier protocol
+const tokenString = Buffer.from(JSON.stringify(token), 'utf8').toString('base64');
 
 // Save to license file
 fs.writeFileSync(options.output, tokenString, 'utf8');

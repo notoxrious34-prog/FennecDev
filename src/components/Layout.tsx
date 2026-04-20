@@ -4,6 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { useTranslation } from '../i18n/useTranslation';
 import { useAppContext } from '../store/AppContext';
 import { PageTransition, ToastContainer } from './ui';
+import { TrialBanner } from './layout/TrialBanner';
 
 const Layout = () => {
   const { isRTL, lang } = useTranslation();
@@ -26,14 +27,17 @@ const Layout = () => {
       )}
       
       <Sidebar />
-      <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 w-full relative">
-        <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-slate-200/30 to-transparent -z-10 pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto">
-          <PageTransition>
-            <Outlet />
-          </PageTransition>
-        </div>
-      </main>
+      <div className="flex-1 flex flex-col w-full relative">
+        <TrialBanner />
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10">
+          <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-b from-slate-200/30 to-transparent -z-10 pointer-events-none"></div>
+          <div className="max-w-7xl mx-auto">
+            <PageTransition>
+              <Outlet />
+            </PageTransition>
+          </div>
+        </main>
+      </div>
       <ToastContainer />
     </div>
   );

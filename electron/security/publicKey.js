@@ -1,6 +1,6 @@
 // electron/security/publicKey.js
 // RSA Public Key — Fennec Facturation v3.0 License System
-// Generated: 2025-04-19
+// Generated: 2026-04-20T10:47:00.000Z (derived from fennec_license_private.pem)
 // Key size: 4096-bit RSA
 // This public key is safe to commit. NEVER commit the private key.
 const PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----

@@ -90,6 +90,22 @@ function registerAllIpcHandlers(ipcMain) {
   ipcMain.handle('license:checkStatus', (event) => licenseController.checkStatus(event));
   ipcMain.handle('license:getDetails', (event) => licenseController.getDetails(event));
   ipcMain.handle('license:getMachineId', (event) => licenseController.getMachineId(event));
+  
+  // NEW: explicit channel for trial/full status (used by trial banner)
+  ipcMain.handle('license:getLicenseType', async () => {
+    const details = licenseService.getLicenseDetails();
+    return {
+      success: true,
+      data: {
+        licenseType:           details?.licenseType        ?? null,
+        isTrial:               details?.isTrial            ?? false,
+        daysLeft:              details?.daysLeft           ?? 0,
+        isExpired:             details?.isExpired          ?? true,
+        isExpiringSoon:        details?.isExpiringSoon     ?? false,
+        isExpiringSoonCritical: details?.isExpiringSoonCritical ?? false,
+      },
+    };
+  });
 
   // Register Backup channels
   ipcMain.handle('backup:create', (event) => backupController.create(event));

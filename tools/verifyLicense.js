@@ -26,12 +26,14 @@ const publicKey = publicKeyModule.PUBLIC_KEY;
 
 // Load the license token
 const tokenString = fs.readFileSync(licenseFile, 'utf8');
-const token = JSON.parse(tokenString);
+// Decode base64 to match application verifier protocol
+const decoded = Buffer.from(tokenString, 'base64').toString('utf8');
+const token = JSON.parse(decoded);
 
 const payload = token.payload;
 const signature = token.signature;
 
-// Verify the signature
+// Verify the signature - use payload as-is to match licenseService.js exactly
 const payloadString = JSON.stringify(payload);
 const verify = crypto.createVerify('SHA256');
 verify.update(payloadString);
