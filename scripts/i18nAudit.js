@@ -23,7 +23,7 @@ const path = require('path');
 // ── Configuration ──────────────────────────────────────────────────────────
 
 // Adjust this path if your locale files are in a different directory
-const LOCALES_DIR = path.join(__dirname, '..', 'src', 'locales');
+const LOCALES_DIR = path.join(process.cwd(), 'src', 'locales');
 
 const LANGUAGES = ['en', 'fr', 'ar'];
 
@@ -65,6 +65,11 @@ function flattenKeys(obj, prefix = '', result = []) {
  * For nested JSON: getValue(obj, 'a.b') === obj.a.b
  */
 function getValue(obj, dotKey) {
+  // First try direct lookup (for flat JSON)
+  if (dotKey in obj) {
+    return obj[dotKey];
+  }
+  // Fall back to nested lookup (for nested JSON)
   return dotKey.split('.').reduce((current, segment) => {
     return current !== undefined && current !== null ? current[segment] : undefined;
   }, obj);

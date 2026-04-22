@@ -1,0 +1,203 @@
+# .github/workflows/release.yml
+# ════════════════════════════════════════════════════════════════
+# Fennec Facturation — Release Pipeline
+# Sprint v3.2 | Trigger: git tag v*.*.*
+# ════════════════════════════════════════════════════════════════
+
+name: Release — Windows Distribution
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'    # Triggered by: git tag v3.2.0 && git push --tags
+  workflow_dispatch:  # Manual trigger from GitHub UI
+    inputs:
+      version:
+        description: 'Version to build (e.g. v3.2.0)'
+        required: true
+        default: 'v3.2.0'
+
+# Prevent concurrent releases
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ════════════════════════════════════════════════════════════
+  # JOB 1: Test Gate — Must pass before any build
+  # ════════════════════════════════════════════════════════════
+  test:
+    name: 🧪 Test Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run test suite
+        run: npm run test
+        # Must be 9/9 passing — blocks build if any fail
+
+      - name: Run preDistCheck
+        run: npm run preDistCheck
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 2: Windows Build
+  # ════════════════════════════════════════════════════════════
+  build-windows:
+    name: 🪟 Build Windows (NSIS + MSI + Portable)
+    runs-on: windows-latest
+    needs: test          # Only runs if test job passes
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite frontend
+        run: npm run build
+
+      # ── Code Signing (Disabled — No cert available) ────────
+      # When certificate is available, uncomment and add secrets:
+      #
+      # - name: Decode certificate
+      #   run: |
+      #     echo "${{ secrets.WIN_CERT_BASE64 }}" | base64 -d > cert.pfx
+      #   shell: bash
+      #
+      # env in electron-builder step:
+      #   WIN_CERT_PATH: cert.pfx
+      #   WIN_CERT_PASSWORD: ${{ secrets.WIN_CERT_PASSWORD }}
+
+      - name: Build Electron — Windows
+        run: npm run electron:build -- --win
+        env:
+          # GitHub token for publish (auto-created by GitHub)
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # License signing key (from GitHub Secrets)
+          FENNEC_LICENSE_PUBLIC_KEY: ${{ secrets.FENNEC_LICENSE_PUBLIC_KEY }}
+
+          # Build metadata
+          BUILD_VERSION: ${{ github.ref_name }}
+          BUILD_DATE: ${{ github.event.head_commit.timestamp }}
+
+      # ── Verify artifacts were created ─────────────────────
+      - name: Verify build artifacts
+        shell: pwsh
+        run: |
+          $artifacts = @(
+            "dist-electron\FennecFacturation-*-Setup.exe",
+            "dist-electron\FennecFacturation-*.msi",
+            "dist-electron\FennecFacturation-*-portable.exe"
+          )
+
+          $allFound = $true
+          foreach ($pattern in $artifacts) {
+            $files = Get-ChildItem -Path $pattern -ErrorAction SilentlyContinue
+            if ($files) {
+              foreach ($f in $files) {
+                $sizeMB = [math]::Round($f.Length / 1MB, 1)
+                Write-Host "✅ $($f.Name) ($sizeMB MB)"
+              }
+            } else {
+              Write-Host "❌ NOT FOUND: $pattern"
+              $allFound = $false
+            }
+          }
+
+          if (-not $allFound) { exit 1 }
+
+      # ── Calculate checksums ────────────────────────────────
+      - name: Generate SHA256 checksums
+        shell: pwsh
+        run: |
+          $outFile = "dist-electron\SHA256SUMS.txt"
+          $files = Get-ChildItem "dist-electron\" -Include "*.exe","*.msi" -Recurse
+
+          $content = @()
+          $content += "# Fennec Facturation ${{ github.ref_name }}"
+          $content += "# SHA256 Checksums — Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss UTC')"
+          $content += "# Verify: certutil -hashfile <filename> SHA256"
+          $content += ""
+
+          foreach ($file in $files) {
+            $hash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToLower()
+            $content += "$hash  $($file.Name)"
+            Write-Host "  $hash  $($file.Name)"
+          }
+
+          $content | Out-File -FilePath $outFile -Encoding UTF8
+          Write-Host "✅ SHA256SUMS.txt generated"
+
+      # ── Upload artifacts ───────────────────────────────────
+      - name: Upload artifacts to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist-electron/*.exe
+            dist-electron/*.msi
+            dist-electron/SHA256SUMS.txt
+          draft: true           # Review before publishing
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            ## Fennec Facturation ${{ github.ref_name }}
+
+            ### ⚠️ Installation Note
+            Windows SmartScreen may show a warning on first run.
+            Click **"More info"** → **"Run anyway"** to proceed.
+            This warning will be resolved in a future release
+            when code signing certificate is obtained.
+
+            ### 📦 Downloads
+            | File | Description |
+            |------|-------------|
+            | `*-Setup.exe` | NSIS Installer (recommended) |
+            | `*.msi` | MSI Package (enterprise/Group Policy) |
+            | `*-portable.exe` | Portable (no installation required) |
+
+            ### 🔐 Verify Integrity
+            ```
+            certutil -hashfile FennecFacturation-Setup.exe SHA256
+            ```
+            Compare with `SHA256SUMS.txt` 
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ════════════════════════════════════════════════════════════
+  # JOB 3: Post-Release Notification
+  # ════════════════════════════════════════════════════════════
+  notify:
+    name: 📢 Release Summary
+    runs-on: ubuntu-latest
+    needs: build-windows
+    if: always()
+
+    steps:
+      - name: Report status
+        run: |
+          if [ "${{ needs.build-windows.result }}" == "success" ]; then
+            echo "✅ Release ${{ github.ref_name }} built successfully"
+            echo "📦 Draft release created — review and publish on GitHub"
+          else
+            echo "❌ Build failed for ${{ github.ref_name }}"
+            exit 1
+          fi
