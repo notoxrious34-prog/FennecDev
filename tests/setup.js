@@ -6,6 +6,24 @@
 
 import { vi } from 'vitest';
 
+// ─── Mock Electron BEFORE any app code imports ─────────────────
+vi.mock('electron', () => ({
+  app: {
+    getPath: vi.fn(() => '/tmp/test-userdata'),
+    getName: vi.fn(() => 'Fennec Facturation'),
+    isPackaged: false,
+    whenReady: vi.fn(() => Promise.resolve()),
+  },
+  BrowserWindow: vi.fn(),
+  session: {
+    defaultSession: {
+      webRequest: {
+        onHeadersReceived: vi.fn(),
+      },
+    },
+  },
+}));
+
 // ─── Suppress console noise in tests ────────────────────────
 // Comment these out when debugging test failures
 global.console.log = vi.fn();
